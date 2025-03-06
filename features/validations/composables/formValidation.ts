@@ -1,8 +1,8 @@
-const required = (value: any) => {
+const isRequired = (value: any) => {
     return value ? "" : "O campo %s é obrigatorio.";
 };
 
-const minLength = (min: number) => {
+const hasMinLength = (min: number) => {
     return (value: string): string => {
         return value.length >= min
             ? ""
@@ -10,7 +10,7 @@ const minLength = (min: number) => {
     };
 };
 
-const maxLength = (max: number) => {
+const hasMaxLength = (max: number) => {
     return (value: string): string => {
         return value.length <= max
             ? ""
@@ -18,33 +18,33 @@ const maxLength = (max: number) => {
     };
 };
 
-const alphaNumeric = (value: string): string => {
+const isAlphaNumeric = (value: string): string => {
     const alphaNumericRegex = /^[0-9a-zA-Z\s]+$/;
     return alphaNumericRegex.test(value)
         ? ""
         : "O campo %s deve conter apenas letras e números.";
 };
 
-const numeric = (value: string): string => {
+const isNumeric = (value: string): string => {
     const numericRegex = /^[0-9]+$/;
     return numericRegex.test(value)
         ? ""
         : "O campo %s deve conter apenas números.";
 };
 
-const alpha = (value: string): string => {
+const isAlpha = (value: string): string => {
     const alphaRegex = /^[a-zA-Z\s]+$/;
     return alphaRegex.test(value) ? "" : "O campo %s deve conter apenas letras.";
 };
 
-const email = (value: string): string => {
+const isValidEmail = (value: string): string => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(value)
         ? ""
         : "O campo %s deve ser um endereço de e-mail valido.";
 };
 
-const validate = (
+const validateField = (
     value: string,
     ...rules: ((v: string) => string)[]
 ): string => {
@@ -57,12 +57,12 @@ const validate = (
 };
 
 export {
-    required,
-    minLength,
-    maxLength,
-    alphaNumeric,
-    numeric,
-    alpha,
-    email,
-    validate,
+    isRequired,
+    hasMinLength,
+    hasMaxLength,
+    isAlphaNumeric,
+    isNumeric,
+    isAlpha,
+    isValidEmail,
+    validateField,
 };
