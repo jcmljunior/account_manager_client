@@ -44,6 +44,14 @@ const isValidEmail = (value: string): string => {
         : "O campo %s deve ser um endereço de e-mail valido.";
 };
 
+const isEqual = () => {
+    return (a: any, b: any) => {
+        return a === b
+            ? ""
+            : `O campo %s deve ser igual ao campo %s.`;
+    };
+};
+
 const validateField = (
     value: string,
     ...rules: ((v: string) => string)[]
@@ -64,5 +72,6 @@ export {
     isNumeric,
     isAlpha,
     isValidEmail,
+    isEqual,
     validateField,
 };

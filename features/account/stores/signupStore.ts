@@ -1,8 +1,5 @@
 import { reactive } from "vue";
-import { isRequired, isValidEmail, hasMinLength } from "~/features/validations/composables/formValidation";
-
-type ValidationRule = (value: string) => string;
-type ValidationSchema = Record<string, ValidationRule[]>;
+import { isRequired, isValidEmail, hasMinLength, isEqual } from "~/features/validations/composables/formValidation";
 
 const useSignUpStore = () => reactive({
     firstName: "",
@@ -15,17 +12,30 @@ const useSignUpStore = () => reactive({
         firstName: [isRequired, hasMinLength(3)],
         lastName: [isRequired, hasMinLength(3)],
         email: [isRequired, isValidEmail],
-        password: [isRequired],
-        confirmPassword: [isRequired],
-    } as ValidationSchema,
+        password: [
+            isRequired,
+            // Declare a função responsável pela avaliação como primeiro parametro.
+            // Informe os estados a serem avaliados.
+            [isEqual, "confirmPassword"],
+        ],
+        confirmPassword: [
+            isRequired,
+            [isEqual, "password"],
+        ],
+    },
 
     validateField(fieldName: keyof typeof useSignUpStore) {
         const value = this[fieldName] as string;
         const rules: any = this.validations[fieldName];
 
         for (const rule of rules) {
-            const error = rule(value);
-            if (error) return error;
+            if (typeof rule === "function") {
+                const error = rule(value);
+                if (error) return error;
+            } else if (Array.isArray(rule) && typeof rule[0] === "function") {
+                const error = rule[0]()(value, ...rule.slice(1).map((r) => this[r as keyof typeof useSignUpStore]));
+                if (error) return error;
+            }
         }
 
         return "";
