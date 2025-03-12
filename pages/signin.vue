@@ -83,7 +83,7 @@ const handleSubmit = () => {
 
         <div class="alert alert-success" role="alert" v-if="useSigninStore.success">
             <h4 class="alert-heading">Sucesso!</h4>
-            <p>Seu cadastro foi realizado com sucesso.</p>
+            <p>Você fez login com sucesso.</p>
         </div>
     </div>
 </template>
