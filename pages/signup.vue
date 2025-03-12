@@ -94,6 +94,7 @@ const handleSubmit = async () => {
                         <label for=" email">Endereço de email</label>
                         <div class="form-text text-danger" v-if="signUpStore.errors.email">{{
                             signUpStore.errors.email }}</div>
+                        <div class="form-text">Nunca compartilharemos seu e-mail com mais ninguém.</div>
                     </div>
                 </div>
                 <div class="col-md"></div>

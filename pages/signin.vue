@@ -80,5 +80,10 @@ const handleSubmit = () => {
                 <NuxtLink to="/recovery">Esqueceu sua senha?</NuxtLink>
             </li>
         </ul>
+
+        <div class="alert alert-success" role="alert" v-if="useSigninStore.success">
+            <h4 class="alert-heading">Sucesso!</h4>
+            <p>Seu cadastro foi realizado com sucesso.</p>
+        </div>
     </div>
 </template>
