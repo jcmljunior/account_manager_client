@@ -49,7 +49,7 @@ const handleSubmit = () => {
                 <div class="form-text text-danger" v-if="useRecoveryStore.errors.email">{{
                     useRecoveryStore.errors.email }}</div>
             </div>
-            <button type="submit" class="btn btn-primary">Enviar</button>
+            <button type="submit" class="btn btn-primary" :disabled="!isValidForm()">Enviar</button>
         </form>
         <ul>
             <li>
