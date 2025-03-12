@@ -1,9 +1,15 @@
 <script lang="ts" setup>
-import useSignUpStore from "~/features/account/stores/signupStore";
+import useSignupStore from "~/features/account/stores/signupStore";
 import { validateForm, ValidationMode, validateField } from "~/features/validations/composables/formValidation";
 
-const signUpStore: any = useSignUpStore();
-const fields: string[] = ["firstName", "lastName", "email", "password", "confirmPassword"];
+const signUpStore: any = useSignupStore();
+const fields: string[] = [
+    "firstName",
+    "lastName",
+    "email",
+    "password",
+    "confirmPassword",
+];
 const validateFieldFirstName = () => validateField(fields[0], signUpStore, ValidationMode.ValidateFirst);
 const validateFieldLastName = () => validateField(fields[1], signUpStore, ValidationMode.ValidateFirst);
 const validateFieldEmail = () => validateField(fields[2], signUpStore, ValidationMode.ValidateFirst);
@@ -22,7 +28,6 @@ const handleKeyup = (event: any, dispatch: CallableFunction) => {
         dispatch();
     }, 10);
 }
-
 const handleBlur = (event: any, dispatch: CallableFunction) => {
     setTimeout(() => {
         const nextElement = document.activeElement;
@@ -115,7 +120,7 @@ const handleSubmit = async () => {
                             class="form-control" name="confirmPassword" id="confirmPassword" placeholder=""
                             v-model="signUpStore.confirmPassword.value" autocomplete="confirmPassword"
                             @keyup="handleKeyup($event, validateFieldConfirmPassword)"
-                            @blur="handleBlur($event, () => {validateFieldConfirmPassword(), isValidForm()})" />
+                            @blur="handleBlur($event, () => { validateFieldConfirmPassword(), isValidForm() })" />
                         <label for=" confirmPassword">Confirmar Senha</label>
                         <div class="form-text text-danger" v-if="signUpStore.errors.confirmPassword">{{
                             signUpStore.errors.confirmPassword }}</div>

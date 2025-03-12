@@ -1,27 +1,10 @@
 import { reactive } from "vue";
 import { isRequired, hasMinLength, isEqual, isValidEmail } from "~/features/validations/composables/formValidation";
 import { IS_REQUIRED_MESSAGE, INVALID_EMAIL_MESSAGE, MIN_LENGTH_MESSAGE, EQUAL_PASSWORD_MESSAGE } from "~/features/validations/config/formMessages";
+import type { SignupStoreProps } from '~/@types';
 
-declare type RuleItem = (value: any) => boolean;
-
-interface FormField {
-    value: string;
-    test: boolean;
-    rules: RuleItem[];
-    messages?: string[];
-}
-interface SignUpStore {
-    success: boolean,
-    errors: Partial<Record<string, string>>;
-    firstName: FormField;
-    lastName: FormField;
-    email: FormField;
-    password: FormField;
-    confirmPassword: FormField;
-}
-
-const useSignUpStore = () => {
-    const state: any = reactive<SignUpStore>({
+const useSignupStore = () => {
+    const state: any = reactive<SignupStoreProps>({
         success: false,
         errors: {},
         firstName: {
@@ -91,8 +74,4 @@ const useSignUpStore = () => {
     return state;
 };
 
-export {
-    type FormField,
-    type SignUpStore,
-    useSignUpStore as default,
-};
+export default useSignupStore;
