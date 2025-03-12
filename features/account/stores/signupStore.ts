@@ -1,59 +1,98 @@
 import { reactive } from "vue";
-import { isRequired, isValidEmail, hasMinLength, isEqual } from "~/features/validations/composables/formValidation";
+import { isRequired, hasMinLength, isEqual, isValidEmail } from "~/features/validations/composables/formValidation";
+import { IS_REQUIRED_MESSAGE, INVALID_EMAIL_MESSAGE, MIN_LENGTH_MESSAGE, EQUAL_PASSWORD_MESSAGE } from "~/features/validations/config/formMessages";
 
-const useSignUpStore = () => reactive({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    errors: {} as Record<string, string>,
-    validations: {
-        firstName: [isRequired, hasMinLength(3)],
-        lastName: [isRequired, hasMinLength(3)],
-        email: [isRequired, isValidEmail],
-        password: [
-            isRequired,
-            // Declare a função responsável pela avaliação como primeiro parametro.
-            // Informe os estados a serem avaliados.
-            [isEqual, "confirmPassword"],
-        ],
-        confirmPassword: [
-            isRequired,
-            [isEqual, "password"],
-        ],
-    },
+declare type RuleItem = (value: any) => boolean;
 
-    validateField(fieldName: keyof typeof useSignUpStore) {
-        const value = this[fieldName] as string;
-        const rules: any = this.validations[fieldName];
+interface FormField {
+    value: string;
+    test: boolean;
+    rules: RuleItem[];
+    messages?: string[];
+}
+interface SignUpStore {
+    success: boolean,
+    errors: Partial<Record<string, string>>;
+    firstName: FormField;
+    lastName: FormField;
+    email: FormField;
+    password: FormField;
+    confirmPassword: FormField;
+}
 
-        for (const rule of rules) {
-            if (typeof rule === "function") {
-                const error = rule(value);
-                if (error) return error;
-            } else if (Array.isArray(rule) && typeof rule[0] === "function") {
-                const error = rule[0]()(value, ...rule.slice(1).map((r) => this[r as keyof typeof useSignUpStore]));
-                if (error) return error;
-            }
-        }
+const useSignUpStore = () => {
+    const state: any = reactive<SignUpStore>({
+        success: false,
+        errors: {},
+        firstName: {
+            value: "",
+            test: false,
+            rules: [
+                isRequired,
+                hasMinLength(3),
+            ],
+            messages: [
+                IS_REQUIRED_MESSAGE,
+                MIN_LENGTH_MESSAGE.replace("%s", "3")
+            ],
+        },
+        lastName: {
+            value: "",
+            test: false,
+            rules: [
+                isRequired,
+                hasMinLength(3),
+            ],
+            messages: [
+                IS_REQUIRED_MESSAGE,
+                MIN_LENGTH_MESSAGE.replace("%s", "3")
+            ],
+        },
+        email: {
+            value: "",
+            test: false,
+            rules: [
+                isRequired,
+                isValidEmail,
+            ],
+            messages: [
+                IS_REQUIRED_MESSAGE,
+                INVALID_EMAIL_MESSAGE
+            ],
+        },
+        password: {
+            value: "",
+            test: false,
+            rules: [
+                isRequired,
+                hasMinLength(6),
+            ],
+            messages: [
+                IS_REQUIRED_MESSAGE,
+                MIN_LENGTH_MESSAGE.replace("%s", "6")
+            ],
+        },
+        confirmPassword: {
+            value: "",
+            test: false,
+            rules: [
+                isRequired,
+                hasMinLength(6),
+                isEqual<string>(() => [state.password.value, state.confirmPassword.value]),
+            ],
+            messages: [
+                IS_REQUIRED_MESSAGE,
+                MIN_LENGTH_MESSAGE.replace("%s", "6"),
+                EQUAL_PASSWORD_MESSAGE
+            ],
+        },
+    });
 
-        return "";
-    },
+    return state;
+};
 
-    validateForm() {
-        for (const field in this.validations) {
-            const fieldName = field as keyof typeof useSignUpStore;
-            const errorMessage = this.validateField(fieldName);
-
-            if (errorMessage) {
-                this.errors[fieldName] = errorMessage;
-                continue;
-            }
-
-            delete this.errors[fieldName];
-        }
-    },
-});
-
-export default useSignUpStore;
+export {
+    type FormField,
+    type SignUpStore,
+    useSignUpStore as default,
+};
