@@ -1,9 +1,9 @@
-import { reactive } from "vue";
+import { reactive, type Reactive } from "vue";
 import { isRequired, hasMinLength, isEqual, isValidEmail } from "~/features/validations/composables/formValidation";
 import { IS_REQUIRED_MESSAGE, INVALID_EMAIL_MESSAGE, MIN_LENGTH_MESSAGE, EQUAL_PASSWORD_MESSAGE } from "~/features/validations/config/formMessages";
 import type { SignupStoreProps } from '~/@types';
 
-const useSignupStore = () => {
+const useSignupStore: () => Reactive<SignupStoreProps> = () => {
     const state: any = reactive<SignupStoreProps>({
         success: false,
         errors: {},

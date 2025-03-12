@@ -6,7 +6,7 @@ declare type FormField = {
     messages: string[];
 };
 declare type SignupStoreProps = {
-    success: boolean,
+    success: boolean;
     errors: Partial<Record<string, string>>;
     firstName: FormField;
     lastName: FormField;
@@ -15,10 +15,15 @@ declare type SignupStoreProps = {
     confirmPassword: FormField;
 };
 declare type SigninStoreProps = {
-    success: boolean,
+    success: boolean;
     errors: Partial<Record<string, string>>;
     email: FormField;
     password: FormField;
+};
+declare type RecoveryStoreProps = {
+    success: boolean;
+    errors: Partial<Record<string, string>>;
+    email: FormField;
 };
 
 export type {
@@ -26,4 +31,5 @@ export type {
     FormField,
     SignupStoreProps,
     SigninStoreProps,
+    RecoveryStoreProps,
 }
