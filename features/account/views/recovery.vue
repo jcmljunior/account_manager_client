@@ -53,10 +53,10 @@ const handleSubmit = () => {
         </form>
         <ul>
             <li>
-                <NuxtLink to="/signin">Já tem uma conta?</NuxtLink>
+                <NuxtLink to="/account/signin">Já tem uma conta?</NuxtLink>
             </li>
             <li>
-                <NuxtLink to="/signup">Ainda não tem uma conta?</NuxtLink>
+                <NuxtLink to="/account/signup">Ainda não tem uma conta?</NuxtLink>
             </li>
         </ul>
 

@@ -134,7 +134,7 @@ const handleSubmit = async () => {
 
         <ul>
             <li>
-                <NuxtLink to="/signin">Já tem uma conta?</NuxtLink>
+                <NuxtLink to="/account/signin">Já tem uma conta?</NuxtLink>
             </li>
         </ul>
 
